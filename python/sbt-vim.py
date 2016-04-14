@@ -116,6 +116,8 @@ class SBT(object):
     for line in lines:
       if line.startswith(SBT.ERROR_TAG):
         yield line[SBT.ERROR_TAG_LEN:]
+      else:
+        yield line
 
   def _filter_files(self, lines):
     for line in lines:
@@ -128,7 +130,8 @@ class SBT(object):
   def compile(self):
     self._init_buffer()
     self.buffer.clear()
-    lines = list(self._filter_files(self._filter_errors(self.command("compile"))))
+    lines = list(self._filter_errors(self.command("compile")))
+    # lines = list(self._filter_files(self._filter_errors(self.command("compile"))))
     if len(lines) > 0:
       self._set_compile_errors(lines)
     else:
